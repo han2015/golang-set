@@ -41,8 +41,12 @@ type OrderedPair struct {
 	Second interface{}
 }
 
-func newThreadUnsafeSet() threadUnsafeSet {
-	return make(threadUnsafeSet)
+func newThreadUnsafeSet(size ...int) threadUnsafeSet {
+	i := 0
+	if len(size) > 0 {
+		i = size[0]
+	}
+	return make(threadUnsafeSet, i)
 }
 
 // Equal says whether two 2-tuples contain the same values in the same order.

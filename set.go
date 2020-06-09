@@ -200,8 +200,8 @@ func NewSetFromSlice(s []interface{}) Set {
 
 // NewThreadUnsafeSet creates and returns a reference to an empty set.
 // Operations on the resulting set are not thread-safe.
-func NewThreadUnsafeSet() Set {
-	set := newThreadUnsafeSet()
+func NewThreadUnsafeSet(size ...int) Set {
+	set := newThreadUnsafeSet(size...)
 	return &set
 }
 
