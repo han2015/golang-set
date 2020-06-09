@@ -73,6 +73,14 @@ func (set *threadUnsafeSet) Add(i interface{}, v ...interface{}) bool {
 	return true
 }
 
+func (set *threadUnsafeSet) Get(key interface{}) interface{} {
+	value, ok := (*set)[key]
+	if ok {
+		return value
+	}
+	return nil
+}
+
 func (set *threadUnsafeSet) Contains(i ...interface{}) bool {
 	for _, val := range i {
 		if _, ok := (*set)[val]; !ok {

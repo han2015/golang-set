@@ -43,6 +43,13 @@ func (set *threadSafeSet) Add(i interface{}, v ...interface{}) bool {
 	return ret
 }
 
+func (set *threadSafeSet) Get(key interface{}) (value interface{}) {
+	set.RLock()
+	value = set.s.Get(key)
+	set.RUnlock()
+	return
+}
+
 func (set *threadSafeSet) Contains(i ...interface{}) bool {
 	set.RLock()
 	ret := set.s.Contains(i...)
