@@ -21,6 +21,16 @@ I have to give some credit for helping seed the idea with this post on [stackove
 
 *Update* - as of 3/9/2014, you can use a compile-time generic version of this package in the [gen](http://clipperhouse.github.io/gen/) framework.  This framework allows you to use the golang-set in a completely generic and type-safe way by allowing you to generate a supporting .go file based on your custom types.
 
+
+## Features (as of 6/09/2020)
+
+修改原因：如果两个不同类型的集合，元素本身类型相同，但是属性结构不同，对其进行集合运算，并保留各元素的信息。
+
+* 修改集合元素的结构，使元素本身可以添加一些属性。当完成集合元素运算后，还可以
+获取到元素的信息。
+* 修改了Iterator的返回值，由interface替换为Element。Element有2各值，key表示元素本身，
+Value表示元素的属性，默认是struct{}。
+
 ## Features (as of 9/22/2014)
 
 * a CartesianProduct() method has been added with unit-tests: [Read more about the cartesian product](http://en.wikipedia.org/wiki/Cartesian_product)
@@ -49,9 +59,9 @@ however that the Python set is a built-in type and supports additional features 
 ```go
 requiredClasses := mapset.NewSet()
 requiredClasses.Add("Cooking")
-requiredClasses.Add("English")
+requiredClasses.Add("English",Class{Time:"2020-08-01",Adress:"Building 11"})
 requiredClasses.Add("Math")
-requiredClasses.Add("Biology")
+requiredClasses.Add("Biology",Class{Time:"2020-08-02",Adress:"Building 01"})
 
 scienceSlice := []interface{}{"Biology", "Chemistry"}
 scienceClasses := mapset.NewSetFromSlice(scienceSlice)
@@ -62,7 +72,7 @@ electiveClasses.Add("Music")
 electiveClasses.Add("Automotive")
 
 bonusClasses := mapset.NewSet()
-bonusClasses.Add("Go Programming")
+bonusClasses.Add("Go Programming",Something{Field:"infos..."})
 bonusClasses.Add("Python Programming")
 
 //Show me all the available classes I can take
@@ -84,6 +94,18 @@ fmt.Println(bonusClasses.Cardinality()) //2
 
 //Do you have the following classes? Welding, Automotive and English?
 fmt.Println(allClasses.IsSuperset(mapset.NewSetFromSlice([]interface{}{"Welding", "Automotive", "English"}))) //true
+
+
+set := gset.NewThreadUnsafeSet()
+set.Add("hello", Info{Text: "hello", Num: 1})
+set.Add("world", Info{Text: "world", Num: 2})
+
+set2 := gset.NewThreadUnsafeSetFromSlice([]interface{}{"hello"})
+set3 := set.Intersect(set2)
+for elem := range set3.Iterator().C {
+  fmt.Println(elem.Key, elem.Value) //hello {hello 1}
+}
+
 ```
 
 Thanks!
