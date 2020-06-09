@@ -30,6 +30,7 @@ I have to give some credit for helping seed the idea with this post on [stackove
 获取到元素的信息。
 * 修改了Iterator的返回值，由interface替换为Element。Element有2各值，key表示元素本身，
 Value表示元素的属性，默认是struct{}。
+* 不支持并集，Iter，PowerSet 和 CartesianProduct，但不影响原有功能。因为在不同类型集合间做这些运算没有多少意义。
 
 ## Features (as of 9/22/2014)
 
