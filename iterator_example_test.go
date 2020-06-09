@@ -20,8 +20,8 @@ func ExampleIterator() {
 	it := set.Iterator()
 
 	for elem := range it.C {
-		if elem.(*YourType).Name == "John" {
-			found = elem.(*YourType)
+		if elem.Key.(*YourType).Name == "John" {
+			found = elem.Key.(*YourType)
 			it.Stop()
 		}
 	}

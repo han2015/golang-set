@@ -123,15 +123,15 @@ func (set *threadUnsafeSet) Intersect(other Set) Set {
 	intersection := newThreadUnsafeSet()
 	// loop over smaller set
 	if set.Cardinality() < other.Cardinality() {
-		for elem := range *set {
+		for elem, v := range *set {
 			if other.Contains(elem) {
-				intersection.Add(elem)
+				intersection.Add(elem, v)
 			}
 		}
 	} else {
 		for elem := range *o {
 			if set.Contains(elem) {
-				intersection.Add(elem)
+				intersection.Add(elem, (*set)[elem])
 			}
 		}
 	}
@@ -142,9 +142,9 @@ func (set *threadUnsafeSet) Difference(other Set) Set {
 	_ = other.(*threadUnsafeSet)
 
 	difference := newThreadUnsafeSet()
-	for elem := range *set {
+	for elem, v := range *set {
 		if !other.Contains(elem) {
-			difference.Add(elem)
+			difference.Add(elem, v)
 		}
 	}
 	return &difference
@@ -195,11 +195,11 @@ func (set *threadUnsafeSet) Iterator() *Iterator {
 
 	go func() {
 	L:
-		for elem := range *set {
+		for elem, v := range *set {
 			select {
 			case <-stopCh:
 				break L
-			case ch <- elem:
+			case ch <- Element{Key: elem, Value: v}:
 			}
 		}
 		close(ch)

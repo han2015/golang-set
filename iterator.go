@@ -25,10 +25,15 @@ SOFTWARE.
 
 package mapset
 
+type Element struct{
+	Key interface{}
+	Value interface{}
+}
+
 // Iterator defines an iterator over a Set, its C channel can be used to range over the Set's
 // elements.
 type Iterator struct {
-	C    <-chan interface{}
+	C    <-chan Element
 	stop chan struct{}
 }
 
@@ -48,8 +53,8 @@ func (i *Iterator) Stop() {
 }
 
 // newIterator returns a new Iterator instance together with its item and stop channels.
-func newIterator() (*Iterator, chan<- interface{}, <-chan struct{}) {
-	itemChan := make(chan interface{})
+func newIterator() (*Iterator, chan<- Element, <-chan struct{}) {
+	itemChan := make(chan Element)
 	stopChan := make(chan struct{})
 	return &Iterator{
 		C:    itemChan,

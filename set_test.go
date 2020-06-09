@@ -926,7 +926,7 @@ func Test_Iterator(t *testing.T) {
 
 	b := NewSet()
 	for val := range a.Iterator().C {
-		b.Add(val)
+		b.Add(val.Key)
 	}
 
 	if !a.Equal(b) {
@@ -944,7 +944,7 @@ func Test_UnsafeIterator(t *testing.T) {
 
 	b := NewThreadUnsafeSet()
 	for val := range a.Iterator().C {
-		b.Add(val)
+		b.Add(val.Key)
 	}
 
 	if !a.Equal(b) {
