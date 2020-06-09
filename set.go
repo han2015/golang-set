@@ -41,7 +41,7 @@ package mapset
 type Set interface {
 	// Adds an element to the set. Returns whether
 	// the item was added.
-	Add(i interface{}) bool
+	Add(i interface{}, v ...interface{}) bool
 
 	// Returns the number of elements in the set.
 	Cardinality() int

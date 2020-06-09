@@ -33,7 +33,7 @@ import (
 	"strings"
 )
 
-type threadUnsafeSet map[interface{}]struct{}
+type threadUnsafeSet map[interface{}]interface{}
 
 // An OrderedPair represents a 2-tuple of values.
 type OrderedPair struct {
@@ -55,12 +55,16 @@ func (pair *OrderedPair) Equal(other OrderedPair) bool {
 	return false
 }
 
-func (set *threadUnsafeSet) Add(i interface{}) bool {
+//Add i: key,v: value
+func (set *threadUnsafeSet) Add(i interface{}, v ...interface{}) bool {
 	_, found := (*set)[i]
 	if found {
 		return false //False if it existed already
 	}
-
+	if len(v) > 0 {
+		(*set)[i] = v[0]
+		return true
+	}
 	(*set)[i] = struct{}{}
 	return true
 }
@@ -220,8 +224,8 @@ func (set *threadUnsafeSet) Equal(other Set) bool {
 
 func (set *threadUnsafeSet) Clone() Set {
 	clonedSet := newThreadUnsafeSet()
-	for elem := range *set {
-		clonedSet.Add(elem)
+	for elem, v := range *set {
+		clonedSet.Add(elem, v)
 	}
 	return &clonedSet
 }

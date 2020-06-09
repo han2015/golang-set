@@ -36,9 +36,9 @@ func newThreadSafeSet() threadSafeSet {
 	return threadSafeSet{s: newThreadUnsafeSet()}
 }
 
-func (set *threadSafeSet) Add(i interface{}) bool {
+func (set *threadSafeSet) Add(i interface{}, v ...interface{}) bool {
 	set.Lock()
-	ret := set.s.Add(i)
+	ret := set.s.Add(i, v...)
 	set.Unlock()
 	return ret
 }
